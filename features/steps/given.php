@@ -217,3 +217,18 @@ $steps->Given( "/^a PHP built-in web server to serve '([^\s]+)'$/",
 		$world->start_php_server( $subdir );
 	}
 );
+
+$steps->Given( '/^the following uploads:$/',
+	function ( $world, TableNode $table ) {
+		foreach ( $table->getHash() as $file ) {
+			if ( (bool) $file['is_orphaned'] ) {
+				copy( __DIR__ . '/../extra/sample-media.jpg', $world->variables['RUN_DIR'] . '/wp-content/uploads/' . $file['filename'] );
+			} else {
+				$target = '/tmp/' . basename( $file['filename'] );
+
+				copy( __DIR__ . '/../extra/sample-media.jpg', $target );
+				$world->proc( "wp media import $target" )->run_check();
+			}
+		}
+	}
+);

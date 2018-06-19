@@ -1,15 +1,11 @@
 <?php
 
+use LiquidWeb\WPOrphans\Command;
+
+require_once __DIR__ . '/src/Command.php';
+
 if ( ! class_exists( 'WP_CLI' ) ) {
 	return;
 }
 
-/**
- * Says "Hello World" to new users
- *
- * @when before_wp_load
- */
-$hello_world_command = function() {
-	WP_CLI::success( "Hello world." );
-};
-WP_CLI::add_command( 'hello-world', $hello_world_command );
+WP_CLI::add_command( 'media remove-orphans', Command::class );
