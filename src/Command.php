@@ -26,7 +26,7 @@ class Command {
 	 */
 	public function __invoke( $args = [], $assoc_args = [] ) {
 		$assoc_args = wp_parse_args( $assoc_args, [
-			'dry_run' => false,
+			'dry-run' => false,
 		] );
 
 		// Collect all known files.
@@ -72,8 +72,9 @@ class Command {
 			}
 		}
 
+		// Once we've looped through the files, remove what's left orphaned.
 		foreach ( $files as $file ) {
-			if ( ! $assoc_args['dry_run'] ) {
+			if ( ! $assoc_args['dry-run'] ) {
 				wp_delete_file( $file );
 			}
 
