@@ -11,11 +11,11 @@ Feature: Test that orphaned media is deleted.
     When I run `wp media remove-orphans`
     Then STDOUT should contain:
       """
-      2018/06/orphan.jpg has been removed.
+      2018/06/orphan.jpg
       """
-    And the wp-content/uploads/2018/06/orphan.jpg file should not exist
+    And the wp-content/uploads/2018/06/orphan.jpg file should exist
 
-  Scenario: Command can be run with --dry-run
+  Scenario: Command can be run with --cleanup
     Given a WP install
     And the following uploads:
       | filename           | is_orphaned |
@@ -23,9 +23,9 @@ Feature: Test that orphaned media is deleted.
       | 2018/06/orphan.jpg | 1           |
 
 
-    When I run `wp media remove-orphans --dry-run`
+    When I run `wp media remove-orphans --cleanup`
     Then STDOUT should contain:
       """
-      2018/06/orphan.jpg has been removed.
+      2018/06/orphan.jpg
       """
-    And the wp-content/uploads/2018/06/orphan.jpg file should exist
+    And the wp-content/uploads/2018/06/orphan.jpg file should not exist

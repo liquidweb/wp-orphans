@@ -19,14 +19,14 @@ class Command {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [--dry-run]
-	 * : If set, locate the media but do not delete it.
+	 * [--cleanup]
+	 * : If set, orphaned media will automatically be deleted.
 	 *
 	 * @subcommand remove-orphans
 	 */
 	public function __invoke( $args = [], $assoc_args = [] ) {
 		$assoc_args = wp_parse_args( $assoc_args, [
-			'dry-run' => false,
+			'cleanup' => false,
 		] );
 
 		// Collect all known files.
@@ -74,14 +74,11 @@ class Command {
 
 		// Once we've looped through the files, remove what's left orphaned.
 		foreach ( $files as $file ) {
-			if ( ! $assoc_args['dry-run'] ) {
+			if ( $assoc_args['cleanup'] ) {
 				wp_delete_file( $file );
 			}
 
-			WP_CLI::log( sprintf(
-				__( '%s has been removed.', 'wp-orphans' ),
-				str_replace( $upload_dir['basedir'] . '/', '', $file )
-			) );
+			WP_CLI::log( str_replace( $upload_dir['basedir'] . '/', '', $file ) );
 		}
 	}
 }
